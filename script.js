@@ -14,18 +14,18 @@ window.onload = function() {
 
 // Draw block on ramp
 function drawInclineBlock(progress) {
-    if (!ctx) return;
+   if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const angleDeg = parseFloat(document.getElementById("incline-angle").value);
     const angleRad = angleDeg * Math.PI / 180;
 
-    // Ramp endpoints: start at top-left, slope down-right
+    // Ramp endpoints: bottom-left → top-right
     const x1 = 50; 
-    const y1 = 100; // top of ramp
+    const y1 = 250; // bottom of ramp
     const x2 = 50 + rampLength * Math.cos(angleRad);
-    const y2 = 100 + rampLength * Math.sin(angleRad); // bottom of ramp
+    const y2 = 250 - rampLength * Math.sin(angleRad); // subtract so it slopes upward-right
 
     // Draw ramp
     ctx.strokeStyle = "#444";
@@ -35,9 +35,9 @@ function drawInclineBlock(progress) {
     ctx.lineTo(x2, y2);
     ctx.stroke();
 
-    // Block position: interpolate from top → bottom
-    const blockX = x1 + (x2 - x1) * progress;
-    const blockY = y1 + (y2 - y1) * progress;
+    // Block position: slides from top → bottom
+    const blockX = x1 + (x2 - x1) * (1 - progress); // start at top, slide down
+    const blockY = y1 + (y2 - y1) * (1 - progress);
 
     ctx.fillStyle = "red";
     ctx.fillRect(blockX - 15, blockY - 15, 30, 30);
