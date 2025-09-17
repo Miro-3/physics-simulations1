@@ -31,7 +31,7 @@ function drawRampTest() {
     ctx.stroke();
 }
 function drawInclineBlock(progress) {
-   if (!ctx) return;
+    if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -42,7 +42,7 @@ function drawInclineBlock(progress) {
     const x1 = 50; 
     const y1 = 250; // bottom of ramp
     const x2 = 50 + rampLength * Math.cos(angleRad);
-    const y2 = 250 - rampLength * Math.sin(angleRad); // subtract so it slopes upward-right
+    const y2 = 250 + rampLength * Math.sin(angleRad); // ADD for downward slope
 
     // Draw ramp
     ctx.strokeStyle = "#444";
@@ -52,9 +52,9 @@ function drawInclineBlock(progress) {
     ctx.lineTo(x2, y2);
     ctx.stroke();
 
-    // Block position: slides from top → bottom
-    const blockX = x1 + (x2 - x1) * (1 - progress); // start at top, slide down
-    const blockY = y1 + (y2 - y1) * (1 - progress);
+    // Block slides from top (x2,y2) to bottom (x1,y1)
+    const blockX = x2 + (x1 - x2) * progress;
+    const blockY = y2 + (y1 - y2) * progress;
 
     ctx.fillStyle = "red";
     ctx.fillRect(blockX - 15, blockY - 15, 30, 30);
