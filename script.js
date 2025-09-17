@@ -21,7 +21,7 @@ function drawInclineBlock(progress) {
     const angleDeg = parseFloat(document.getElementById("incline-angle").value);
     const angleRad = angleDeg * Math.PI / 180;
 
-    // Ramp endpoints: TOP → BOTTOM
+    // Ramp endpoints: start at top-left, slope down-right
     const x1 = 50; 
     const y1 = 100; // top of ramp
     const x2 = 50 + rampLength * Math.cos(angleRad);
@@ -35,7 +35,7 @@ function drawInclineBlock(progress) {
     ctx.lineTo(x2, y2);
     ctx.stroke();
 
-    // Block position (slides from top → bottom)
+    // Block position: interpolate from top → bottom
     const blockX = x1 + (x2 - x1) * progress;
     const blockY = y1 + (y2 - y1) * progress;
 
