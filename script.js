@@ -31,7 +31,7 @@ function drawInclineBlock(progress) {
 
     // Block position
     const blockX = 50 + rampLength * Math.cos(angleRad) * progress;
-    const blockY = 250 - rampLength * Math.sin(angleRad) * progress;
+    const blockY = 250 + rampLength * Math.sin(angleRad) * progress;
 
     ctx.fillStyle = "red";
     ctx.fillRect(blockX - 15, blockY - 15, 30, 30);
