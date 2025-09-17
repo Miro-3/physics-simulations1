@@ -1,25 +1,23 @@
-// Physics constants
+// Physics constant
 const g = 9.81; // m/s²
 
-// Get canvas and context
+// Canvas for incline
 const canvas = document.getElementById("incline-canvas");
 const ctx = canvas.getContext("2d");
 
-// Simulation parameters
 let animationId;
-let posX = 50; // start x
-let posY = 200; // start y
-const rampLength = 300; // pixels
+let rampLength = 300; // pixels
 let a = 0, v = 0, time = 0;
-let dt = 0.02; // time step in seconds
+let dt = 0.02; // seconds
 
-// Draw ramp and block
+// Draw block on ramp (progress from 0 to 1)
 function drawInclineBlock(progress) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Draw ramp
+
     const angleDeg = parseFloat(document.getElementById("incline-angle").value);
     const angleRad = angleDeg * Math.PI / 180;
+
+    // Draw ramp
     ctx.strokeStyle = "#444";
     ctx.lineWidth = 3;
     ctx.beginPath();
@@ -27,11 +25,10 @@ function drawInclineBlock(progress) {
     ctx.lineTo(50 + rampLength * Math.cos(angleRad), 250 - rampLength * Math.sin(angleRad));
     ctx.stroke();
 
-    // Block position along ramp
+    // Block position
     const blockX = 50 + rampLength * Math.cos(angleRad) * progress;
     const blockY = 250 - rampLength * Math.sin(angleRad) * progress;
 
-    // Draw block
     ctx.fillStyle = "red";
     ctx.fillRect(blockX - 15, blockY - 15, 30, 30);
 }
@@ -39,27 +36,24 @@ function drawInclineBlock(progress) {
 // Run simulation
 function runInclineSimulation() {
     cancelAnimationFrame(animationId);
-    posX = 50;
-    posY = 200;
 
-    // Read inputs
     const angleDeg = parseFloat(document.getElementById("incline-angle").value);
-    const mass = parseFloat(document.getElementById("incline-mass").value);
     const friction = parseFloat(document.getElementById("incline-friction").value);
 
-    // Compute acceleration
     const angleRad = angleDeg * Math.PI / 180;
-    a = g * Math.sin(angleRad) - friction * g * Math.cos(angleRad);
-    if(a < 0) a = 0; // prevent negative acceleration
 
-    // Compute ramp length
-    const rampLengthM = 1; // assume 1 meter for calculations
+    // Acceleration
+    a = g * Math.sin(angleRad) - friction * g * Math.cos(angleRad);
+    if(a < 0) a = 0;
+
+    // Assume ramp length = 1 m for calculation
+    const rampLengthM = 1;
     v = Math.sqrt(2 * a * rampLengthM);
     time = v / a;
 
     let progress = 0;
-    let totalTime = time; // seconds
     let elapsed = 0;
+    let totalTime = time;
 
     function animate() {
         elapsed += dt;
@@ -67,7 +61,7 @@ function runInclineSimulation() {
         if(progress > 1) progress = 1;
         drawInclineBlock(progress);
 
-        // Display results
+        // Display values
         ctx.fillStyle = "black";
         ctx.font = "14px Arial";
         ctx.fillText(`Acceleration: ${a.toFixed(2)} m/s²`, 10, 20);
@@ -78,6 +72,7 @@ function runInclineSimulation() {
             animationId = requestAnimationFrame(animate);
         }
     }
+
     animate();
 }
 
@@ -87,18 +82,33 @@ function compareIncline() {
     const predVel = parseFloat(document.getElementById("incline-pred-vel").value);
     const predTime = parseFloat(document.getElementById("incline-pred-time").value);
 
-    let comparisonHTML = `<ul>`;
-    comparisonHTML += `<li>Acceleration: predicted = ${predAcc || '-'} m/s², simulated = ${a.toFixed(2)}</li>`;
-    comparisonHTML += `<li>Final velocity: predicted = ${predVel || '-'} m/s, simulated = ${v.toFixed(2)}</li>`;
-    comparisonHTML += `<li>Time to bottom: predicted = ${predTime || '-'} s, simulated = ${time.toFixed(2)}</li>`;
-    comparisonHTML += `</ul>`;
+    let html = `<ul>`;
+    html += `<li>Acceleration: predicted = ${predAcc || '-'} m/s², simulated = ${a.toFixed(2)}</li>`;
+    html += `<li>Final velocity: predicted = ${predVel || '-'} m/s, simulated = ${v.toFixed(2)}</li>`;
+    html += `<li>Time to bottom: predicted = ${predTime || '-'} s, simulated = ${time.toFixed(2)}</li>`;
+    html += `</ul>`;
 
-    document.getElementById("incline-comparison").innerHTML = `<h4>Comparison Results</h4>` + comparisonHTML;
+    document.getElementById("incline-comparison").innerHTML = `<h4>Comparison Results</h4>` + html;
 }
 
-// Reset inputs
+// Reset simulation
 function resetIncline() {
     cancelAnimationFrame(animationId);
     drawInclineBlock(0);
-    document.getElementById("incline-comparison").innerHTML = `<h4>Comparison Results</h4><p>Enter predictions and run simulation to see comparison here.</p>`;
+    document.getElementById("incline-comparison").innerHTML =
+        `<h4>Comparison Results</h4><p>Enter predictions and run simulation to see comparison here.</p>`;
 }
+
+// Initial draw on page load
+window.onload = function() {
+    drawInclineBlock(0);
+};
+
+// Placeholder Pulley functions (to expand later)
+function runPulley2Simulation() { alert("Pulley2 simulation coming soon!"); }
+function comparePulley2() { alert("Pulley2 compare coming soon!"); }
+function resetPulley2() { alert("Pulley2 reset coming soon!"); }
+
+function runPulleySurfaceSimulation() { alert("Pulley+Surface simulation coming soon!"); }
+function comparePulleySurface() { alert("Pulley+Surface compare coming soon!"); }
+function resetPulleySurface() { alert("Pulley+Surface reset coming soon!"); }
