@@ -13,6 +13,24 @@ window.onload = function() {
 };
 
 // Draw block on ramp
+function drawRampOnly() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const angleDeg = parseFloat(document.getElementById("incline-angle").value);
+    const angleRad = angleDeg * Math.PI / 180;
+
+    const x1 = 50;   // left base
+    const y1 = 100;  // top of ramp
+    const x2 = x1 + rampLength * Math.cos(angleRad);
+    const y2 = y1 + rampLength * Math.sin(angleRad); // *** add, not subtract ***
+
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+}
 function drawInclineBlock(progress) {
    if (!ctx) return;
 
