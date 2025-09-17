@@ -1,17 +1,21 @@
-// Physics constant
+let canvas, ctx, animationId;
 const g = 9.81; // m/s²
-
-// Canvas for incline
-const canvas = document.getElementById("incline-canvas");
-const ctx = canvas.getContext("2d");
-
-let animationId;
 let rampLength = 300; // pixels
 let a = 0, v = 0, time = 0;
-let dt = 0.02; // seconds
+let dt = 0.02; // simulation time step
 
-// Draw block on ramp (progress from 0 to 1)
+// Initialize canvas and draw initial block
+window.onload = function() {
+    canvas = document.getElementById("incline-canvas");
+    ctx = canvas.getContext("2d");
+
+    drawInclineBlock(0);
+};
+
+// Draw block on ramp
 function drawInclineBlock(progress) {
+    if (!ctx) return; // safety check
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const angleDeg = parseFloat(document.getElementById("incline-angle").value);
@@ -33,7 +37,7 @@ function drawInclineBlock(progress) {
     ctx.fillRect(blockX - 15, blockY - 15, 30, 30);
 }
 
-// Run simulation
+// Run Inclined Plane Simulation
 function runInclineSimulation() {
     cancelAnimationFrame(animationId);
 
@@ -42,14 +46,14 @@ function runInclineSimulation() {
 
     const angleRad = angleDeg * Math.PI / 180;
 
-    // Acceleration
+    // Acceleration (m/s²)
     a = g * Math.sin(angleRad) - friction * g * Math.cos(angleRad);
-    if(a < 0) a = 0;
+    if (a < 0) a = 0;
 
     // Assume ramp length = 1 m for calculation
     const rampLengthM = 1;
     v = Math.sqrt(2 * a * rampLengthM);
-    time = v / a;
+    time = a === 0 ? 0 : v / a;
 
     let progress = 0;
     let elapsed = 0;
@@ -57,7 +61,7 @@ function runInclineSimulation() {
 
     function animate() {
         elapsed += dt;
-        progress = elapsed / totalTime;
+        progress = totalTime > 0 ? elapsed / totalTime : 1;
         if(progress > 1) progress = 1;
         drawInclineBlock(progress);
 
@@ -99,16 +103,12 @@ function resetIncline() {
         `<h4>Comparison Results</h4><p>Enter predictions and run simulation to see comparison here.</p>`;
 }
 
-// Initial draw on page load
-window.onload = function() {
-    drawInclineBlock(0);
-};
-
-// Placeholder Pulley functions (to expand later)
+// Placeholder Pulley 2 Masses
 function runPulley2Simulation() { alert("Pulley2 simulation coming soon!"); }
 function comparePulley2() { alert("Pulley2 compare coming soon!"); }
 function resetPulley2() { alert("Pulley2 reset coming soon!"); }
 
+// Placeholder Pulley + Surface
 function runPulleySurfaceSimulation() { alert("Pulley+Surface simulation coming soon!"); }
 function comparePulleySurface() { alert("Pulley+Surface compare coming soon!"); }
 function resetPulleySurface() { alert("Pulley+Surface reset coming soon!"); }
