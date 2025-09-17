@@ -19,16 +19,19 @@ function drawRampOnly() {
     const angleDeg = parseFloat(document.getElementById("incline-angle").value);
     const angleRad = angleDeg * Math.PI / 180;
 
-    const x1 = 50;   // left base
-    const y1 = 100;  // top of ramp
-    const x2 = x1 + rampLength * Math.cos(angleRad);
-    const y2 = y1 + rampLength * Math.sin(angleRad); // *** add, not subtract ***
+    // Anchor the TOP of the ramp
+    const xTop = 50;
+    const yTop = 100;
+
+    // Ramp extends down-right
+    const xBottom = xTop + rampLength * Math.cos(angleRad);
+    const yBottom = yTop + rampLength * Math.sin(angleRad);
 
     ctx.strokeStyle = "blue";
     ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
+    ctx.moveTo(xTop, yTop);
+    ctx.lineTo(xBottom, yBottom);
     ctx.stroke();
 }
 function drawInclineBlock(progress) {
