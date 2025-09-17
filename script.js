@@ -13,25 +13,21 @@ window.onload = function() {
 };
 
 // Draw block on ramp
-function drawRampOnly() {
+function drawRampTest() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const angleDeg = parseFloat(document.getElementById("incline-angle").value);
-    const angleRad = angleDeg * Math.PI / 180;
-
-    // Anchor the TOP of the ramp
-    const xTop = 50;
-    const yTop = 100;
-
-    // Ramp extends down-right
-    const xBottom = xTop + rampLength * Math.cos(angleRad);
-    const yBottom = yTop + rampLength * Math.sin(angleRad);
-
-    ctx.strokeStyle = "blue";
-    ctx.lineWidth = 3;
+    // Force a ramp that should go DOWN-RIGHT
+    ctx.strokeStyle = "red";
     ctx.beginPath();
-    ctx.moveTo(xTop, yTop);
-    ctx.lineTo(xBottom, yBottom);
+    ctx.moveTo(50, 50);      // top-left
+    ctx.lineTo(200, 200);    // down-right
+    ctx.stroke();
+
+    // Force a ramp that should go UP-RIGHT
+    ctx.strokeStyle = "green";
+    ctx.beginPath();
+    ctx.moveTo(50, 250);     // bottom-left
+    ctx.lineTo(200, 100);    // up-right
     ctx.stroke();
 }
 function drawInclineBlock(progress) {
