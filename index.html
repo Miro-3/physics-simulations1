@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Physics Simulations</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f0f0f0; padding:20px; }
+    .tab { display: none; }
+    .tab-buttons button {
+      padding: 10px 20px;
+      margin-right: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: 1px solid #444;
+      background: #ddd;
+    }
+    .tab-buttons button.active { background: #0073e6; color:white; }
+    .container { max-width: 900px; margin:auto; padding:10px; background:#fff; border-radius:10px; }
+    .controls { float:left; width:35%; }
+    .simulation { float:right; width:60%; }
+    .comparison { clear:both; margin-top:20px; background:#eee; padding:10px; border-radius:8px; }
+    input[type=number] { width:60px; }
+    label { display:block; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Physics Simulations</h2>
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="openTab('incline')">Classic Inclined Plane</button>
+      <button class="tab-btn" onclick="openTab('pulley2')">Pulley: 2 Masses</button>
+      <button class="tab-btn" onclick="openTab('pulleySurface')">Pulley + Surface</button>
+    </div>
+
+    <!-- Classic Inclined Plane Tab -->
+    <div id="incline" class="tab" style="display:block;">
+      <div class="controls">
+        <h3>Controls & Predictions</h3>
+        <label>Ramp angle (deg): <input id="incline-angle" type="number" value="30"></label>
+        <label>Block mass (kg): <input id="incline-mass" type="number" value="2"></label>
+        <label>Friction (μ): <input id="incline-friction" type="number" step="0.01" value="0.1"></label>
+        <h4>Predictions</h4>
+        <label>Acceleration (m/s²): <input id="incline-pred-acc" type="number"></label>
+        <label>Final velocity (m/s): <input id="incline-pred-vel" type="number"></label>
+        <label>Time to bottom (s): <input id="incline-pred-time" type="number"></label>
+        <button onclick="runInclineSimulation()">Run Simulation</button>
+        <button onclick="compareIncline()">Compare</button>
+        <button onclick="resetIncline()">Reset</button>
+      </div>
+      <div class="simulation">
+        <h3>Simulation</h3>
+        <canvas id="incline-canvas" width="400" height="300" style="border:1px solid #444;"></canvas>
+      </div>
+      <div class="comparison" id="incline-comparison">
+        <h4>Comparison Results</h4>
+        <p>Enter predictions and run simulation to see comparison here.</p>
+      </div>
+    </div>
+
+    <!-- Pulley: 2 Masses Tab -->
+    <div id="pulley2" class="tab">
+      <div class="controls">
+        <h3>Controls & Predictions</h3>
+        <label>Mass Block 1 (kg): <input id="pulley2-m1" type="number" value="2"></label>
+        <label>Mass Block 2 (kg): <input id="pulley2-m2" type="number" value="3"></label>
+        <h4>Predictions</h4>
+        <label>Acceleration (m/s²): <input id="pulley2-pred-acc" type="number"></label>
+        <label>Tension (N): <input id="pulley2-pred-tension" type="number"></label>
+        <button onclick="runPulley2Simulation()">Run Simulation</button>
+        <button onclick="comparePulley2()">Compare</button>
+        <button onclick="resetPulley2()">Reset</button>
+      </div>
+      <div class="simulation">
+        <h3>Simulation</h3>
+        <canvas id="pulley2-canvas" width="400" height="300" style="border:1px solid #444;"></canvas>
+      </div>
+      <div class="comparison" id="pulley2-comparison">
+        <h4>Comparison Results</h4>
+        <p>Enter predictions and run simulation to see comparison here.</p>
+      </div>
+    </div>
+
+    <!-- Pulley + Surface Tab -->
+    <div id="pulleySurface" class="tab">
+      <div class="controls">
+        <h3>Controls & Predictions</h3>
+        <label>Ramp angle (deg): <input id="ps-angle" type="number" value="30"></label>
+        <label>Block mass on ramp (kg): <input id="ps-mass-ramp" type="number" value="2"></label>
+        <label>Friction (μ): <input id="ps-friction" type="number" step="0.01" value="0.1"></label>
+        <label>Hanging block mass (kg): <input id="ps-mass-hang" type="number" value="3"></label>
+        <h4>Predictions</h4>
+        <label>Acceleration (m/s²): <input id="ps-pred-acc" type="number"></label>
+        <label>Final velocity (m/s): <input id="ps-pred-vel" type="number"></label>
+        <label>Time to bottom (s): <input id="ps-pred-time" type="number"></label>
+        <button onclick="runPulleySurfaceSimulation()">Run Simulation</button>
+        <button onclick="comparePulleySurface()">Compare</button>
+        <button onclick="resetPulleySurface()">Reset</button>
+      </div>
+      <div class="simulation">
+        <h3>Simulation</h3>
+        <canvas id="ps-canvas" width="400" height="300" style="border:1px solid #444;"></canvas>
+      </div>
+      <div class="comparison" id="ps-comparison">
+        <h4>Comparison Results</h4>
+        <p>Enter predictions and run simulation to see comparison here.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Tab switching
+    function openTab(tabId) {
+      const tabs = document.getElementsByClassName('tab');
+      for (let tab of tabs) { tab.style.display = 'none'; }
+      document.getElementById(tabId).style.display = 'block';
+
+      const buttons = document.getElementsByClassName('tab-btn');
+      for (let btn of buttons) { btn.classList.remove('active'); }
+      event.currentTarget.classList.add('active');
+    }
+
+    // Placeholder functions for each simulation
+    function runInclineSimulation(){ alert("Run Incline Simulation"); }
+    function compareIncline(){ alert("Compare Incline Predictions"); }
+    function resetIncline(){ alert("Reset Incline"); }
+
+    function runPulley2Simulation(){ alert("Run Pulley2 Simulation"); }
+    function comparePulley2(){ alert("Compare Pulley2 Predictions"); }
+    function resetPulley2(){ alert("Reset Pulley2"); }
+
+    function runPulleySurfaceSimulation(){ alert("Run Pulley+Surface Simulation"); }
+    function comparePulleySurface(){ alert("Compare Pulley+Surface Predictions"); }
+    function resetPulleySurface(){ alert("Reset Pulley+Surface"); }
+
+  </script>
+</body>
+</html>
